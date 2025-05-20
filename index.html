@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scroll Animation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #000;
+      color: #fff;
+      height: 5000px; /* make the page tall enough to scroll */
+      overflow-y: scroll;
+    }
+    #image-sequence {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    #image-sequence img {
+      width: 600px;
+      max-width: 90vw;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="image-sequence">
+    <img id="frame" src="frames/0001.png" alt="animation frame">
+  </div>
+
+  <script>
+    const frameCount = 90;
+    const frame = document.getElementById("frame");
+
+    const currentFrame = index => `frames/${String(index).padStart(4, '0')}.png`;
+
+    const updateImage = () => {
+      const scrollTop = window.scrollY;
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      const scrollFraction = scrollTop / maxScroll;
+      const frameIndex = Math.min(
+        frameCount - 1,
+        Math.floor(scrollFraction * frameCount)
+      ) + 1;
+
+      frame.src = currentFrame(frameIndex);
+    };
+
+    window.addEventListener("scroll", updateImage);
+  </script>
+
+</body>
+</html>
